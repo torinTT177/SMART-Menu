@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>The Hungry Recipes</title>
+  <title>The Smart Menu</title>
   <meta name="description" content="The Hungry Recipes app let's you browse recipes provided by TheMealDB API">
   <meta name="author" content="Nitin Chandran Nair">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,19 +12,25 @@
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="icon" type="image/png" href="images/favicon.png">
+  <head>
+    <style>
+      .white-text, .heading, .navbar-link {
+        color: black;
+      }
+    </style>
+  </head>
 </head>
-<body>
+<body style="background: url('images/breakfast.webp') no-repeat center center fixed; background-size: cover; background-color: rgba(0,0,0,0.5); background-blend-mode: multiply;">
   <main role="main" id="main">
       <header>
           <nav class="navbar">
               <div class="container">
                 <div class="row">
                     <div class="eight columns">
-                        <a class="brand" tabindex="0" title="The Hungry Recipes">The Hungry Recipes</a>
+                        <a class="brand" tabindex="0" title="The Perfect Recipe" style="color: black;">The Perfect Recipe</a>
                       </div>
                       <div class="four columns">
                         <ul class="navbar-list">
-                          <li class="navbar-item"><a class="navbar-link btnRandomRecipe clear-field" tabindex="0" href="#random" title="Show a random recipe">Random</a></li>                       
                           <li class="navbar-item"><a class="navbar-link" tabindex="0" href="#about-section">About</a></li>
                         </ul>
                       </div>
@@ -42,7 +48,7 @@
                   <div class="twelve columns">
                     <div class="row d-flex">
                       <div class="four columns" style="align-self:center;">
-                        <h1 class="heading">The Hungry Recipes</h1>
+                        <h1 class="heading" style="color: black;">The Perfect Recipe</h1>
                       </div>
                       <div class="eight columns">
                         <div class="row">
@@ -53,7 +59,6 @@
                           </div>
                           <div class="four columns">
                               <img src="images/chef.svg" class="u-max-full-width chefimg" />
-                              <a class="button btnRandomRecipe" href="#random" title="Show a random recipe" onclick="clear()">Random Recipe</a>
                           </div>
                         </div>
   
@@ -103,38 +108,13 @@
         </div>
       </section>
       
-      <section id="random">
-        <br/>
-        <div class="container">
-          <div class="row">
-              <div class="four columns">
-                <h3 class="heading" id="dynamicTitle">The Random Recipe</h3> <br/>
-              </div>
-              <div class="eight columns" style="text-align:right;">
-                <br/>
-                <a id="searchAgainBtn" class="button btnRandomRecipe" href="#landing" title="Searh again" style="margin-right:10px">Search again</a>
-
-                <img src="images/chef.svg" class="u-max-full-width chefimg" alt="Chef icon" />
-                <button id="dynamicButton" class="button btnRandomRecipe" title="Show another random recipe">Randomize</button>
-              </div> 
-          </div>
-          <div class="row">
-            <div class="four columns mealImg" id="randomMealImg"><div class="loader"></div></div>
-            <div class="eight columns mealMetadata" id=randomMealMetadata></div>
-          </div>
-          <div class="row">
-            <div class="twelve columns mealInstructions" id="randomMealInstructions"></div>
-          </div>
-        </div>
-      </section>
-      
-      <section id="about-section">
-        <div class="container">
+      <section id="about-section" class="white-text">
+        <div class="container" style="color: white;">
             <div class="row">
                 <div class="twelve columns">
                   <div class="row d-flex">
                     <div class="four columns" style="align-self:center;">
-                      <h1 class="heading">About The Hungry Recipes</h1>
+                      <h1 class="heading">About The Perfect Recipe</h1>
                     </div>
                     <div class="eight columns">
                       <p>
