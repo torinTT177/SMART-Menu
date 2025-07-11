@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Food Preferences</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <main role="main">
+    <div class="container">
+      <div class="row">
+        <div class="twelve columns">
+          <h2>What would you like to eat?</h2>
+          <form id="foodPreferences">
+            <div class="row">
+              <div class="six columns">
+                <label for="foodType">Food Type/Cuisine</label>
+                <input class="u-full-width" type="text" id="foodType" placeholder="e.g. Italian, Chinese, Vegetarian">
+              </div>
+              <div class="six columns">
+                <label for="peopleCount">Number of People</label>
+                <input class="u-full-width" type="number" id="peopleCount" min="1" value="1">
+              </div>
+            </div>
+            <input class="button-primary" type="submit" value="Find Recipes">
+          </form>
+          
+          <div id="mealCardsSection" class="section">
+            <div class="container">
+              <div class="mealCards row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+</html>

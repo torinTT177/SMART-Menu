@@ -3,21 +3,46 @@ $(document).ready(function(){
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
     .then(res => res.json())
     .then(res => {
-        res.meals.forEach(meal => {
-            let listCategory = ''
-            listCategory += `
-                <li class="navbar-item">
-                <a onclick="fetchCategoryMeal('${meal.strCategory}')"
-                    class="navbar-link-category" tabindex="0" href="#mealCardsSection">${meal.strCategory}</a>
-                </li>`;
-            NavBarCategory.innerHTML += listCategory;
-        });
+        const navBar = $('.navbar-list');
+        if(navBar.length) {
+            res.meals.forEach(meal => {
+                let listCategory = ''
+                listCategory += `
+                    <li class="navbar-item">
+                    <a onclick="fetchCategoryMeal('${meal.strCategory}')"
+                        class="navbar-link-category" tabindex="0" href="#mealCardsSection">${meal.strCategory}</a>
+                    </li>`;
+                navBar.append(listCategory);
+            });
+        }
     })
 
     // Fetch searched recipe
-    $('.btnSearchRecipe').on('click', function(){
-        fetchMeal('u');
-    })
+$('.btnSearchRecipe').on('click', function(){
+    fetchMeal('u');
+})
+
+// Handle food preferences form submission
+$('#foodPreferences').on('submit', function(e){
+    e.preventDefault();
+    const cuisine = $('#foodType').val().trim();
+    if(cuisine) {
+        fetch('https://www.themealdb.com/api/json/v1/1/filter.php?a=' + encodeURIComponent(cuisine))
+        .then(res => res.json())
+        .then(res => {
+            if(res.meals) {
+                createMealCards(res.meals);
+                window.scrollTo(0, $('#mealCardsSection').offset().top);
+            } else {
+                fetchMeal('u'); // Fallback to general search
+            }
+        })
+        .catch(e => {
+            console.warn(e);
+            fetchMeal('u'); // Fallback to general search
+        });
+    }
+});
 
     //also this could be easily refactored, maybe open issue for this too
 
@@ -35,14 +60,55 @@ $(document).keypress(function(e) {
 // Show recipe of clicked meal
 $(document).on('click','.mealCardRecipeBtn',function(){
     let meal = $(this).data('meal');
-    fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i='+meal.idMeal)
-    .then( res => res.json() )
-    .then( res => {
-        meal = res.meals[0];
-        // 此处可添加新的食谱展示逻辑
-    })
-    .catch(e => console.warn(e));
+    sessionStorage.setItem('currentMeal', JSON.stringify(meal));
+    window.location.href = 'recipe.html?id=' + meal.idMeal;
 });
+
+// Load recipe details when recipe.html loads
+if(window.location.pathname.includes('recipe.html')) {
+    let mealId = new URLSearchParams(window.location.search).get('id');
+    let meal = null;
+    
+    if(mealId) {
+        meal = {idMeal: mealId};
+    } else {
+        meal = JSON.parse(sessionStorage.getItem('currentMeal'));
+    }
+    
+    if(meal) {
+        fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i='+meal.idMeal)
+        .then(res => res.json())
+        .then(res => {
+            const recipe = res.meals[0];
+            
+            // Set basic recipe info
+            $('#recipeTitle').text(recipe.strMeal);
+            $('#recipeImage').attr('src', recipe.strMealThumb).attr('alt', recipe.strMeal);
+            
+            // Add ingredients
+            const ingredientsList = $('#ingredientsList');
+            ingredientsList.empty();
+            
+            for(let i = 1; i <= 20; i++) {
+                if(recipe['strIngredient'+i]) {
+                    const ingredient = recipe['strIngredient'+i];
+                    const measure = recipe['strMeasure'+i];
+                    ingredientsList.append(`<li>${measure} ${ingredient}</li>`);
+                }
+            }
+            
+            // Add instructions
+            const instructionsList = $('#instructionsList');
+            instructionsList.empty();
+            
+            const instructions = recipe.strInstructions.split('\r\n').filter(step => step.trim());
+            instructions.forEach(step => {
+                instructionsList.append(`<li>${step}</li>`);
+            });
+        })
+        .catch(e => console.warn(e));
+    }
+}
 
 // Clear search box on button press
 $(document).on('click','.clear-field',function(){
